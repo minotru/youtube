@@ -1,0 +1,24 @@
+{
+    "name": "youtube",
+    "version": "1.0.0",
+    "description": "The RollingScopes youtube task",
+    "main": "index.js",
+    "scripts": {
+      "test": "webpack",
+      "start": "webpack-dev-server",
+      "clean": "rm -rf dist",
+      "build": "npm run clean && webpack",
+      "deploy": "npm run build && gh-pages -d dist -m \"Updates --skip-ci\""
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/minotru/youtube"
+    },
+    "author": "Simon Karasik",
+    "devDependencies": {
+      "css-loader": "^0.28.7",
+      "style-loader": "^0.19.0",
+      "webpack": "^3.7.1",
+      "webpack-dev-server": "^2.9.1"
+    }
+  }
