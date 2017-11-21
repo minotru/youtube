@@ -1,13 +1,15 @@
-import "./Clip.css"
+import {createElementFromHTML} from "./Util"
 
 export default function Clip(props) {
-    const res =  
-    `<div class = 'Clip'>
-        <h1>${props.title}</h1>
-        <p>${props.author}</p>
-        <p>${props.date}</p>
-        <p>${props.views}</p>
-        <p>${props.description}</p>
+    const html = 
+    `<div class = "clip">\
+        <img class = "clip-preview" src = ${props.preview}>\
+        <a class = "clip-title" href = "${props.clipUrl}">${props.title}</a>\
+        <p class = "clip-author">${props.author}</p>\
+        <p class = "clip-date">${props.date}</p>\
+        <p class = "clip-views">${props.views}</p>\
+        <p class = "clip-decription">${props.description}</p>\
     </div>`;
-    return res;
+    return createElementFromHTML(html);
+    
 }
