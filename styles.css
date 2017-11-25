@@ -1,14 +1,36 @@
 body {
     background-color: rgb(52, 61, 70);
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+  
+}
+
+.page {
+    width: 90%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    background-color: tomato;
+    height: 100vh;
 }
 
 .search-bar-box {
     width: 60%;
-    margin: auto;
-    display: flex;
+    margin-top: 3vh;
+    /* margin: auto; */
+    /* display: flex; */
     border-radius: 0.25em;
     background-color: white;
     overflow: hidden;
+    margin-bottom: 5vh;
 }
 
 .search-button {
@@ -21,6 +43,7 @@ body {
     flex: 2;
     border: none;
     font-size: 1.05em;
+    /* min-width: 180px; */
 }
 
 .search-bar:focus, .search-button:focus {
@@ -31,4 +54,36 @@ body {
 .search-button:hover {
     background-color: rgb(216, 216, 216);
     transition: background-color 0.5s;
+}
+
+.clips-list {
+    display: flex;
+    overflow: hidden;
+    flex-flow: row nowrap;
+    width: 100%;
+    background-color: rgb(187, 217, 237);
+}
+
+.clip {
+    background-color: white;
+    margin-right: 10vw;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.clip-header-container {
+    position: relative;
+}
+
+.clip-preview {
+    
+}
+
+.clip-title {
+    position: relative;
+    z-index: 2;
+}
+
+.clip-data {
+    align-self: center;
 }
