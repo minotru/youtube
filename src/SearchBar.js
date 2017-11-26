@@ -16,8 +16,13 @@ export default function SearchBar(props) {
         input
     );
     button.onclick = function() {
-        props.onSearch(input.value);
+        if (input.value.length != 0)
+            props.onSearch(input.value);
     };
+    input.onkeyup = function(event) {
+        if (event.keyCode === 13)
+            button.click();
+    }
     // `<div class="search-bar-box">
     //     <button type="button" class="search-button">
     //         <i class="material-icons">search</i>

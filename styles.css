@@ -2,6 +2,7 @@ body {
     background-color: rgb(52, 61, 70);
     margin: 0;
     padding: 0;
+    font-family: Verdana, Geneva, sans-serif;
 }
 
 * {
@@ -24,9 +25,10 @@ body {
 
 .search-bar-box {
     width: 60%;
-    margin-top: 3vh;
+    flex-basis: auto;
+    margin-top: 0.75em;
     /* margin: auto; */
-    /* display: flex; */
+    display: inline-flex;
     border-radius: 0.25em;
     background-color: white;
     overflow: hidden;
@@ -61,14 +63,18 @@ body {
     overflow: hidden;
     flex-flow: row nowrap;
     width: 100%;
+    height: 80vh;
     background-color: rgb(187, 217, 237);
 }
 
 .clip {
     background-color: white;
     margin-right: 10vw;
+    width: 30vw;
     display: flex;
     flex-flow: column nowrap;
+    padding: 0.75em 0;
+    border-radius: 0.75em;
 }
 
 .clip-header-container {
@@ -76,14 +82,44 @@ body {
 }
 
 .clip-preview {
-    
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .clip-title {
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 0.5em 0;
+    font-size: 1.25rem;
+    line-height: 1.25rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    background-color: rgba(15, 143, 58, 0.837);
 }
 
-.clip-data {
+.clip-content {
+    padding: 1em 0.75em 0 0.75em;
+    text-align: left;
+}
+
+.clip-metrics{
     align-self: center;
+    padding: 0 2em;
+    text-align: center;
+}
+
+.clip-metrics-icon {
+    font-size: 1.5em;
+    /* margin-right: 2em; */
+    float: left;
+    color: rgb(111, 108, 109);
+}
+
+.clip-description {
+    font-style: italic;
+    line-height: 1.1em;
 }

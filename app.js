@@ -29,13 +29,20 @@ function extractClipPropsFromResponse(item) {
     }
 }
 
+function removeChildren(node) {
+    while (node.firstChild)
+        node.removeChild(node.firstChild);
+}
+
 function loadClips(searchText) {
     let request;
-    if (typeof q == "undefined")
+    if (typeof searchText !== "undefined") {
         request = gapi.client.youtube.search.list({
             part: "snippet",
             q:searchText
         });
+        removeChildren(document.getElementById("clips"));
+    }
     else
         request = gapi.client.youtube.search.list({
             part: "snippet",

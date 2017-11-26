@@ -14,22 +14,23 @@ export default function Clip(props) {
                 ${props.title}
             </a>\
         </div>
-        <div class = "clip-data">
-            <p class = "clip-author">\
-                <i class="material-icons">face</i>\
-                ${props.author}
-            </p>\
-            <p class = "clip-date">\
-                <i class="material-icons">date_range</i>\
-                ${dateString}
-            </p>\
-            <p class = "clip-viewCount"> \
-                <i class = "material-icons">visibility</i>\
-                ${props.viewCount}
-            </p>\
-            
+        <div class = "clip-content">
+            <div class = "clip-metrics">
+                <p class = "clip-metric">\
+                    <i class="material-icons clip-metrics-icon">face</i>\
+                    ${props.author}
+                </p>\
+                <p class = "clip-metric">\
+                    <i class="material-icons clip-metrics-icon">date_range</i>\
+                    ${dateString}
+                </p>\
+                <p class = "clip-metric"> \
+                    <i class = "material-icons clip-metrics-icon">visibility</i>\
+                    ${props.viewCount}
+                </p>\  
+            </div>
+            <p class = "clip-description">${props.description}</p>\
         </div>
-        <p class = "clip-description">${props.description}</p>\
     </div>`;
     return createElementFromHTML(html);
     
