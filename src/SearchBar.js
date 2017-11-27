@@ -2,7 +2,7 @@ import {createElementFromHTML, createElement} from "./Util";
 
 export default function SearchBar(props) {
     const button = createElementFromHTML(
-    `<button type="button" class="search-button">
+    `<button type="button" class="search-button" autofocus>
         <i class="material-icons">search</i>
     </button>`);
     const input = createElementFromHTML(

@@ -33,6 +33,5 @@ export default function Clip(props) {
         </div>
     </div>`;
     return createElementFromHTML(html);
-    
 }
 

@@ -7,10 +7,9 @@ body {
 
 * {
     box-sizing: border-box;
-  
 }
 
-.page {
+.wrapper {
     width: 90%;
     display: flex;
     flex-flow: column;
@@ -19,7 +18,7 @@ body {
     margin-right: auto;
     left: 0;
     right: 0;
-    background-color: tomato;
+    /* background-color: tomato; */
     height: 100vh;
 }
 
@@ -27,6 +26,7 @@ body {
     width: 60%;
     flex-basis: auto;
     margin-top: 0.75em;
+    flex-shrink: 0;
     /* margin: auto; */
     display: inline-flex;
     border-radius: 0.25em;
@@ -58,19 +58,29 @@ body {
     transition: background-color 0.5s;
 }
 
-.clips-list {
+.clips-page-container {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    height: 80vh;
+    margin-left: 0;
+    transition: all margin-left 2s ease-in;
+}
+
+.clips-page {
+    float: left;
     display: flex;
     overflow: hidden;
     flex-flow: row nowrap;
     width: 100%;
-    height: 80vh;
-    background-color: rgb(187, 217, 237);
+    height: 100%;
+    justify-content: space-around;
+    /* background-color: rgb(187, 217, 237); */
 }
 
 .clip {
+    width: 320px;
     background-color: white;
-    margin-right: 10vw;
-    width: 30vw;
     display: flex;
     flex-flow: column nowrap;
     padding: 0.75em 0;
@@ -82,16 +92,19 @@ body {
 }
 
 .clip-preview {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: auto;
 }
 
 .clip-title {
     position: absolute;
     top: 50%;
     left: 50%;
+    overflow-y: hidden;
     transform: translate(-50%, -50%);
     width: 100%;
+    text-overflow: ellipsis;
+    max-height: 80%;
     padding: 0.5em 0;
     font-size: 1.25rem;
     line-height: 1.25rem;
@@ -99,6 +112,12 @@ body {
     color: white;
     text-align: center;
     background-color: rgba(15, 143, 58, 0.837);
+    transition: background-color 0.5s ease-in-out;
+}
+
+.clip-title:hover {
+    background-color: rgba(15, 143, 58, 1);
+    
 }
 
 .clip-content {
@@ -122,4 +141,5 @@ body {
 .clip-description {
     font-style: italic;
     line-height: 1.1em;
+    text-overflow: ellipsis;
 }

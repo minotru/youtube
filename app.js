@@ -3,7 +3,17 @@ import Clip from "./src/Clip"
 import * as Util from "./src/Util"
 
 const body = document.getElementsByTagName("body")[0];
-var nextPageToken = null;
+var clips = [];
+var prevPage = null, currentPage = null, nextPage = null;
+var currentClip = 0;
+var clipsPerPage;
+var clipWidth = 320;
+var nextPageToken = undefined;
+var startMouseX = null;
+var prevMouseX = null;
+var isMouseDown = false;
+var pageWidth;
+
 
 function onClientLoad() {
     gapi.client.load('youtube', 'v3', onYouTubeApiLoad);
@@ -35,24 +45,16 @@ function removeChildren(node) {
 }
 
 function loadClips(searchText) {
-    let request;
-    if (typeof searchText !== "undefined") {
-        request = gapi.client.youtube.search.list({
-            part: "snippet",
-            q:searchText
-        });
-        removeChildren(document.getElementById("clips"));
-    }
-    else
-        request = gapi.client.youtube.search.list({
-            part: "snippet",
-            pageToken: nextPageToken
-        });
+    const request = gapi.client.youtube.search.list({
+        part: "snippet",
+        q:searchText,
+        pageToken: nextPageToken,
+        maxResults: 15,
+    });
     let propsList = [];
     request.then(response => {
         response = response.result;
         nextPageToken = response.nextPageToken;
-        //console.log(response);
         let ids = [];
         response.items.forEach(item => {
             ids.push(item.id.videoId);
@@ -68,30 +70,119 @@ function loadClips(searchText) {
             propsList[ind].viewCount = item.statistics.viewCount
         );
         propsList.forEach(props =>
-             document.getElementById("clips").appendChild(Clip(props)));
+              clips.push(Clip(props)));
+        updatePage();
     });
 }
 
+function createPage(startInd) {
+    if (startInd < 0 || startInd >= clips.length)
+        return null;
+    let page = Util.createElement(
+        "div",
+        {
+            "class": "clips-page"
+        }
+    );
+    const clipsCnt = Math.min(clipsPerPage, clips.length - startInd);
+    for (let i = startInd; i < startInd + clipsCnt; i++)
+        page.appendChild(clips[i]);
+    return page;
+}
+
+
 function search(text) {
-   nextPageToken = null;
-   loadClips(text);
+    nextPageToken = undefined;
+    if (currentPage !== null)
+        removeChildren(currentPage);
+    loadClips(text);
+}
+
+function animate(direction) {
+    if (direction === "left" && !prevPage) 
+        return;
+    if (direction == "right" && currentClip + clipsPerPage >= clips.length)
+        loadClips();
+    direction = direction == "left" ? -1 : 1;
+    currentClip += clipsPerPage * direction;
+    const pageInd = Math.floor(currentClip / clipsPerPage)  + direction;
+    const pages =  document.getElementById("pages");
+    pages.style.marginLeft = (pageInd + 1) * pageWidth * -1 + "px";
+    updatePage();
+    // requestAnimationFrame(function() {
+    // });
+    // pages.style.transitionDuration = '1s';
+    // pages.style.left = pageInd * pageWidth * -1 + "px";
+    // setTimeout(() => results.style.transitionDuration = '0s', 1000);
+}
+
+function updatePage() {
+    handleResize();
+    const pages = document.getElementById("pages");
+    removeChildren(document.getElementById("pages"));
+    prevPage = createPage(currentClip - clipsPerPage);
+    currentPage = createPage(currentClip);
+    nextPage = createPage(currentClip + clipsPerPage);
+    if (prevPage)
+        pages.appendChild(prevPage);
+    pages.appendChild(currentPage);
+    if (nextPage)
+        pages.appendChild(nextPage);
+}
+
+function handleResize() {
+    const pageWidth = document.getElementById("app").offsetWidth;
+    clipsPerPage = Math.floor((pageWidth * 0.9) / clipWidth);
 }
 
 window.onClientLoad = onClientLoad;
+window.onresize = updatePage;
+function onMouseDown(event) {
+    if (event.button !== 0)
+        return;
+    event.stopPropagation();
+    isMouseDown = true;
+    prevMouseX = startMouseX = event.clientX;
+}
+function onMouseUp(event) {
+    if (!(event.button === 0 && isMouseDown))
+        return;
+    isMouseDown = false;
+    if (event.clientX - startMouseX < 0)
+        animate("right");
+    else if (event.clientX - startMouseX > 0)
+        animate("left");
+}
 
-const page = Util.createElement(
+function onMouseMove(event) {
+    if (!isMouseDown || event.button !== 0)
+        return;
+    const pages = document.getElementById("pages")
+    const deltaX = event.clientX - prevMouseX;
+    pages.style.marginLeft = 
+       pages.style.marginLeft.valueOf() + deltaX + "px" ;
+    prevMouseX = event.clientX;
+}
+
+const pages =  Util.createElement(
     "div",
     {
-        "class": "page"
+        "class": "clips-page-container",
+        "id": "pages"
+    }
+);
+pages.onmouseup = onMouseUp;
+pages.onmousedown = onMouseDown;
+pages.onmousemove = onMouseMove;
+
+const app = Util.createElement(
+    "div",
+    {
+        "class": "wrapper",
+        "id": "app"
     },
     SearchBar({onSearch: search}),
-    Util.createElement(
-        "div",
-        {
-            "class": "clips-list",
-            "id": "clips"
-        }
-    )
+    pages
 );
 
-document.body.appendChild(page);
+document.body.appendChild(app);
