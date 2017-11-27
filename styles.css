@@ -18,6 +18,7 @@ body {
     margin-right: auto;
     left: 0;
     right: 0;
+    /* overflow: hidden; */
     /* background-color: tomato; */
     height: 100vh;
 }
@@ -38,6 +39,7 @@ body {
 .search-button {
     background-color: white;
     border: none;
+    transition: background-color 0.5s ease-in-out;
 }
 
 .search-bar {
@@ -55,7 +57,6 @@ body {
 
 .search-button:hover {
     background-color: rgb(216, 216, 216);
-    transition: background-color 0.5s;
 }
 
 .clips-page-container {
@@ -63,8 +64,10 @@ body {
     position: relative;
     overflow: hidden;
     height: 80vh;
-    margin-left: 0;
-    transition: all margin-left 2s ease-in;
+    left: 0;
+    transition: left 0.5s ease-in-out;
+    /* margin-left: 0;
+    transition: all margin-left 2s ease-in; */
 }
 
 .clips-page {
@@ -75,6 +78,9 @@ body {
     width: 100%;
     height: 100%;
     justify-content: space-around;
+    position: relative;
+    left: 0;
+    transition: left 0.5s ease-in-out;
     /* background-color: rgb(187, 217, 237); */
 }
 

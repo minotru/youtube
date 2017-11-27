@@ -99,39 +99,37 @@ function search(text) {
 }
 
 function animate(direction) {
-    if (direction === "left" && !prevPage) 
+    if (direction === -1 && currentClip === 0) 
         return;
-    if (direction == "right" && currentClip + clipsPerPage >= clips.length)
+    if (direction === 1 && currentClip + clipsPerPage >= clips.length)
         loadClips();
-    direction = direction == "left" ? -1 : 1;
     currentClip += clipsPerPage * direction;
-    const pageInd = Math.floor(currentClip / clipsPerPage)  + direction;
     const pages =  document.getElementById("pages");
-    pages.style.marginLeft = (pageInd + 1) * pageWidth * -1 + "px";
-    updatePage();
-    // requestAnimationFrame(function() {
-    // });
-    // pages.style.transitionDuration = '1s';
-    // pages.style.left = pageInd * pageWidth * -1 + "px";
-    // setTimeout(() => results.style.transitionDuration = '0s', 1000);
+    const page = pages.firstChild;
+    const nextPage = createPage(currentClip);
+    if (direction === 1) 
+        pages.appendChild(nextPage); 
+    else
+        pages.insertBefore(nextPage, pages.firstChild);
+    page.style.transitionDuration = "1s";
+    page.style.left = -direction * pageWidth + "px";
+    setTimeout(function() {
+        pages.removeChild(page);
+    }, 1000);
+
 }
+
+window.animate = animate;
 
 function updatePage() {
     handleResize();
     const pages = document.getElementById("pages");
     removeChildren(document.getElementById("pages"));
-    prevPage = createPage(currentClip - clipsPerPage);
-    currentPage = createPage(currentClip);
-    nextPage = createPage(currentClip + clipsPerPage);
-    if (prevPage)
-        pages.appendChild(prevPage);
-    pages.appendChild(currentPage);
-    if (nextPage)
-        pages.appendChild(nextPage);
+    pages.appendChild(createPage(currentClip));
 }
 
 function handleResize() {
-    const pageWidth = document.getElementById("app").offsetWidth;
+    pageWidth = document.getElementById("app").offsetWidth;
     clipsPerPage = Math.floor((pageWidth * 0.9) / clipWidth);
 }
 
@@ -144,14 +142,15 @@ function onMouseDown(event) {
     isMouseDown = true;
     prevMouseX = startMouseX = event.clientX;
 }
+
 function onMouseUp(event) {
     if (!(event.button === 0 && isMouseDown))
         return;
     isMouseDown = false;
     if (event.clientX - startMouseX < 0)
-        animate("right");
+        animate(1);
     else if (event.clientX - startMouseX > 0)
-        animate("left");
+        animate(-1);
 }
 
 function onMouseMove(event) {
